@@ -8,6 +8,7 @@ import {
 
 export default function PaginatorBasicDemo() {
   const [artworks, setArtworks] = useState<Artwork[]>([]);
+  const [selectedArtWorks, setSelectedArtWorks] = useState<Artwork[]>();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,8 +25,15 @@ export default function PaginatorBasicDemo() {
         paginator
         rows={5}
         rowsPerPageOptions={[5, 10, 25, 50]}
+        selection={selectedArtWorks}
+        onSelectionChange={(e) => setSelectedArtWorks(e.value as Artwork[])}
+        dataKey="id"
         tableStyle={{ minWidth: "70rem" }}
       >
+        <Column
+          selectionMode="multiple"
+          headerStyle={{ width: "3rem" }}
+        ></Column>
         <Column field="title" header="Title" style={{ width: "20%" }} />
         <Column
           field="place_of_origin"
