@@ -1,6 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { OverlayPanel } from "primereact/overlaypanel";
 import { DataTable, type DataTablePageEvent } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { InputText } from "primereact/inputtext";
+import { Button } from "primereact/button";
 
 export interface Artwork {
   title: string;
@@ -19,21 +22,23 @@ export default function PaginatorBasicDemo() {
   const [loading, setLoading] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const res = await fetch(
-        `https://api.artic.edu/api/v1/artworks?page=${page}`
-      );
-      const data = await res.json();
+  const op = useRef<OverlayPanel>(null);
 
-      setArtworks(data.data as Artwork[]);
-      setTotalRecords(data.pagination.total);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     setLoading(true);
+  //     const res = await fetch(
+  //       `https://api.artic.edu/api/v1/artworks?page=${page}`
+  //     );
+  //     const data = await res.json();
 
-      setLoading(false);
-    };
-    fetchData();
-  }, [page]);
+  //     setArtworks(data.data as Artwork[]);
+  //     setTotalRecords(data.pagination.total);
+
+  //     setLoading(false);
+  //   };
+  //   fetchData();
+  // }, [page]);
 
   const onPageChange = (event: DataTablePageEvent) => {
     setPage((event.page ?? 0) + 1);
@@ -57,7 +62,34 @@ export default function PaginatorBasicDemo() {
       >
         <Column
           selectionMode="multiple"
-          headerStyle={{ width: "3rem" }}
+          header={
+            <>
+              <img
+                src="./chevron-down.svg"
+                alt="chevron down"
+                className="w-[30px] h-[30px] cursor-pointer"
+                onClick={(e) => op.current?.toggle(e)}
+              />
+              <OverlayPanel ref={op}>
+                <div className="flex flex-col gap-4">
+                  <InputText
+                    type="text"
+                    className="p-inputtext-sm"
+                    placeholder="Select rows..."
+                  />
+
+                  <Button
+                    label="Submit"
+                    className="w-[100px] h-[40px] self-end"
+                  />
+                </div>
+              </OverlayPanel>
+            </>
+          }
+          headerStyle={{
+            width: "4rem",
+          }}
+          headerClassName="[&_div.p-column-header-content]:justify-between [&_div.p-column-header-content]:flex-row-reverse"
         ></Column>
         <Column field="title" header="Title" style={{ width: "20%" }} />
         <Column
