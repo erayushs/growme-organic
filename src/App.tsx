@@ -1,30 +1,55 @@
 import { useState, useEffect } from "react";
-import { DataTable } from "primereact/datatable";
+import { DataTable, type DataTablePageEvent } from "primereact/datatable";
 import { Column } from "primereact/column";
-import {
-  ArtInstituteService,
-  type Artwork,
-} from "./service/ArtInstituteService";
+
+export interface Artwork {
+  title: string;
+  place_of_origin: string;
+  artist_display: string;
+  inscriptions: string | null;
+  date_start: number;
+  date_end: number;
+}
 
 export default function PaginatorBasicDemo() {
   const [artworks, setArtworks] = useState<Artwork[]>([]);
+  const [page, setPage] = useState(1);
+
   const [selectedArtWorks, setSelectedArtWorks] = useState<Artwork[]>();
+  const [loading, setLoading] = useState(false);
+  const [totalRecords, setTotalRecords] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await ArtInstituteService.fetchArtworks();
-      setArtworks(data);
+      setLoading(true);
+      const res = await fetch(
+        `https://api.artic.edu/api/v1/artworks?page=${page}`
+      );
+      const data = await res.json();
+
+      setArtworks(data.data as Artwork[]);
+      setTotalRecords(data.pagination.total);
+
+      setLoading(false);
     };
     fetchData();
-  }, []);
+  }, [page]);
+
+  const onPageChange = (event: DataTablePageEvent) => {
+    setPage((event.page ?? 0) + 1);
+  };
 
   return (
     <div className="card">
-      <DataTable
+      <DataTable // <--|
+        paginator //   |__________________
+        first={(page - 1) * 7} //       |
+        rows={7} //                     |
+        lazy //                     DataTablw will not try to load all data at once.
+        onPage={onPageChange}
         value={artworks}
-        paginator
-        rows={5}
-        rowsPerPageOptions={[5, 10, 25, 50]}
+        totalRecords={totalRecords}
+        loading={loading}
         selection={selectedArtWorks}
         onSelectionChange={(e) => setSelectedArtWorks(e.value as Artwork[])}
         dataKey="id"
