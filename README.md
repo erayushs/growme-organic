@@ -1,15 +1,71 @@
-# Data Table
+# Art Institute Data Table
 
-- Built with Vite + React + TypeScript
+A **data table web application** built as part of a React + TypeScript project.  
+The app fetches artwork data from the **Art Institute of Chicago API** and displays it in a clean, paginated table with row selection and persistent state.
 
-- Styled using TailwindCSS
+---
 
-- Implements PrimeReact DataTable
+## 🚀 Features
 
-- Supports server-side pagination (fetches fresh data on every page change)
+- Minimal **landing page** displaying the data table.
+- **Server-side pagination**: fetches fresh data on every page change.
+- **Row selection** via checkboxes (single & multiple rows).
+- **Persistent selection**: maintains selected rows across different pages.
+- **Overlay panel** for selecting a number of rows to auto-select.
+- Handles edge cases:
+  - Empty pages
+  - Partial selections
 
-- Allows row selection via checkboxes (single & all rows)
+---
 
-- Ensures row selection persists across different pages
+## 🛠️ Tech Stack
 
-- Deployed on Netlify/Cloudflare for easy access
+- ⚛️ React.js (Vite + TypeScript)
+- 🎨 Tailwind CSS
+- 🧩 PrimeReact (DataTable, Column, OverlayPanel)
+- 🌐 Fetch API
+
+---
+
+## 📂 Project Setup
+
+### 1️⃣ Clone the repository
+
+```bash
+git clone https://github.com/erayushs/growme-organic
+cd growme-organic
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the development server:
+
+```bash
+npm run dev
+```
+
+Build for production:
+
+```bash
+npm run build
+```
+
+Preview production build:
+
+```bash
+npm run preview
+```
+
+## 🌐 Deployment
+
+The app is deployed on Netlify:
+🔗 Live Demo - https://growme-organic-new.netlify.app/
+
+👨‍💻 Author
+
+Ayush Singh
+Frontend Developer 🚀
